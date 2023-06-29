@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\PostRequest;
 use App\Models\Post;
 
 class PostController extends Controller
@@ -21,5 +21,18 @@ class PostController extends Controller
     public function show(Post $post)
     {
         return view('posts.show')->with(['post' => $post]);
+    }
+    
+    public function create()
+    {
+        return view('posts.create');
+    }
+    
+    // $request = post => ['title' => 'aaa', 'body' => 'aiueo']
+    public function store(PostRequest $request, Post $post)
+    {
+        $input = $request['post']; // $input = ['title' => 'aaa', 'body' => 'aiueo']
+        $post->fill($input)->save(); // 空のpostインスタンスに取得した内容を入れて保存，$post->create($input);でも可
+        return redirect('/posts/'.$post->id); // 例えば/posts/5などにリダイレクト
     }
 }
