@@ -35,4 +35,17 @@ class PostController extends Controller
         $post->fill($input)->save(); // 空のpostインスタンスに取得した内容を入れて保存，$post->create($input);でも可
         return redirect('/posts/'.$post->id); // 例えば/posts/5などにリダイレクト
     }
+    
+    public function edit(Post $post)
+    {
+        return view('posts.edit')->with(['post' => $post]);
+    }
+    
+    public function update(PostRequest $request, Post $post)
+    {
+        $input_post = $request['post'];
+        $post->fill($input_post)->save();
+        
+        return redirect('/posts/'.$post->id);
+    }
 }
