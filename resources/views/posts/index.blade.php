@@ -7,6 +7,15 @@
             </h2>
         </x-slot>
         <body class="antialiased">
+            <div>
+                @foreach($questions as $question)
+                    <div>
+                        <a href="https://teratail.com/questions/{{ $question['id'] }}">
+                            {{ $question['title'] }}
+                        </a>
+                    </div>
+                @endforeach
+            </div>
             <h1>Blog Name</h1>
             <div class='posts'>
                 @foreach ($posts as $post)
