@@ -16,7 +16,22 @@ class PostController extends Controller
     */
     public function index(Post $post)//インポートしたPostをインスタンス化して$postとして使用。
     {
-        return view('posts.index')->with(['posts' => $post->getPaginateByLimit()]);//$postの中身を戻り値にする。
+        $client = new \GuzzleHttp\Client();
+        
+        $url = 'https://teratail.com/api/v1/questions';
+        
+        $response = $client->request(
+            'GET',
+            $url,
+            ['Bearer' => config('services.teratail.token')]
+        );
+        
+        $questions = json_decode($response->getBody(), true);
+        
+        return view('posts.index')->with([
+            'posts' => $post->getPaginateByLimit(),
+            'questions' => $questions['questions'],
+        ]);
     }
     
     public function show(Post $post)
